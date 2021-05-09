@@ -27,6 +27,7 @@
 #include "controller.h"
 #include "delay.h"
 #include "irs.h"
+#include "solver.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,7 +60,44 @@ int16_t FRONTL_IR=0;
 int16_t FRONTR_IR=0;
 int16_t FRONT_IR=0;
 int16_t LEFT_IR=0;
+Heading mousefacing = NORTH;
 /* USER CODE END PV */
+Heading changeHeading(Heading h, int n)
+{
+	if (n > 0)
+	{
+		if (h == NORTH)
+			return EAST;
+		else if (h == SOUTH)
+			return WEST;
+		else if (h == EAST)
+			return SOUTH;
+		else if (h == WEST)
+			return NORTH;
+	}
+	else if (n < 0)
+	{
+		if (h == NORTH)
+			return WEST;
+		else if (h == SOUTH)
+			return EAST;
+		else if (h == EAST)
+			return NORTH;
+		else if (h == WEST)
+			return SOUTH;
+	}
+}
+
+void setHeading(Heading h)
+{
+	mousefacing = h;
+}
+
+Heading getHeading()
+{
+	return mousefacing;
+}
+
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -164,7 +202,7 @@ int main(void)
 		turn(1);
 		 HAL_Delay(500);
 	 }*/
-	  Action a = floodfill();
+	  Action a = floodFill();
 	  if (a == FORWARD)
 	  {
 		  move(1);
@@ -172,16 +210,16 @@ int main(void)
 	  else if (a == RIGHT)
 	  {
 		  turn(1);
-		  direction = changeHeading(direction, 1);
+		  mousefacing = changeHeading(mousefacing, 1);
 	  }
 	  else if (a == LEFT)
 	  {
 		  turn(-1);
-		  direction = changeHeading(direction, -1);
+		  mousefacing = changeHeading(mousefacing, -1);
 	  }
 	  else if (a == IDLE)
 	  {
-		  printf("yayy we did it");
+		//  printf("yayy we did it");
 		  break;
 	  }
     /* USER CODE END WHILE */
