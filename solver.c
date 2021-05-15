@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "irs.h"
 
 bool initOrNot = true;
 
@@ -45,7 +46,7 @@ Action solver()
 {
     //printf("ok programs running\n");
     // This can be changed to call other maze solving algorithms
-	Action flood = floodfill();
+	Action flood = floodFill();
 	switch(flood)
 	    {
 	        // Update position and goal movement depending on heading
@@ -53,7 +54,7 @@ Action solver()
 	            if(getFrontReading())
 	            {
 	                printf("Error: mouse attempted to move through wall\nPress s to resume\n");
-	                running = 0;
+	                //running = 0;
 	                return IDLE;
 	            }
 	            else
@@ -236,6 +237,8 @@ Action floodFill()
 
     if (initOrNot)
     {
+    	if (mouseX == 5 && mouseY == 5)
+    	    	return IDLE;
         initialize();
         initOrNot = false;
     }
@@ -546,5 +549,5 @@ Action floodFill()
         }
     }
 
-    return LEFT;
+    return RIGHT;
 }

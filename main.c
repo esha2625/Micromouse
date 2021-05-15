@@ -129,7 +129,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+	HAL_Init();
 
   /* USER CODE BEGIN Init */
   Delay_Init();
@@ -158,26 +158,11 @@ int main(void)
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
   resetEncoders();
- // setMotorRPWM(0.3);
-  // setMotorLPWM(-0.3);
-  //turn(1);
-  //HAL_Delay(1000);
-  /*move(2);
-  HAL_Delay(1000);
-  turn(-1);
-  HAL_Delay(1000);
-  move(1);
-  HAL_Delay(1000);
-  turn(1);
-  HAL_Delay(1000);
-  move(1);
-  HAL_Delay(1000);*/
-   	  //turn(-1);
-   	  //move(2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
 	 left_counts = getLeftEncoderCounts();
@@ -187,41 +172,30 @@ int main(void)
 	 FRONTR_IR= readIR(IR_RFRONT);
 	 LEFT_IR= readIR(IR_LEFT);
 	 FRONT_IR=(FRONTL_IR+FRONTR_IR)/2;
-	/*if (FRONT_IR < 700)
+
+	 if (FRONT_IR>2400)
 	 {
-		 move(1);
-		 HAL_Delay(500);
+		 moveback(1);
 	 }
-	 else if (LEFT_IR < 600)
-	 {
-		 turn (-1);
-		 HAL_Delay(500);
-	 }
-	 else
-	 {
-		turn(1);
-		 HAL_Delay(500);
-	 }*/
-	  Action a = floodFill();
-	  if (a == FORWARD)
-	  {
-		  move(1);
-	  }
-	  else if (a == RIGHT)
-	  {
-		  turn(1);
-		  mousefacing = changeHeading(mousefacing, 1);
-	  }
-	  else if (a == LEFT)
-	  {
-		  turn(-1);
-		  mousefacing = changeHeading(mousefacing, -1);
-	  }
-	  else if (a == IDLE)
-	  {
-		//  printf("yayy we did it");
-		  break;
-	  }
+			 Action a = solver();
+				  if (a == FORWARD)
+				  {
+					  move(1);
+				  }
+				  else if (a == RIGHT)
+				  {
+					  turn(1);
+					  mousefacing = changeHeading(mousefacing, 1);
+				  }
+				  else if (a == LEFT)
+				  {
+					  turn(-1);
+					  mousefacing = changeHeading(mousefacing, -1);
+				  }
+				  else if (a == IDLE)
+				  {
+					  break;
+				  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

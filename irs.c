@@ -8,6 +8,8 @@
 #include "main.h"
 #include "irs.h"
 #include "delay.h"
+#include <stdbool.h>
+
 
 // This is the buffer that will get filled up with all the measurements
 uint16_t adc_buf[NUM_SAMPLES];
@@ -82,34 +84,34 @@ int getFrontReading()
 	int frontL = readFrontLIR();
 	int frontR= readFrontRIR();
 	int front = (frontL+frontR)/2;
-	int thresholdFront = 600;
+	int thresholdFront = 700;
 	if (front < thresholdFront)
 	{
-		return FALSE;
+		return false;
 	}
-	return TRUE;
+	return true;
 }
 
 int getRightReading()
 {
 	int right = readRightIR();
-	int thresholdRight = 600;
+	int thresholdRight = 900;
 	if (right < thresholdRight)
 	{
-		return FALSE;
+		return false;
 	}
-	return TRUE;
+	return true;
 }
 
 int getLeftReading()
 {
 	int left = readLeftIR();
-	int thresholdLeft = 600;
+	int thresholdLeft = 900;
 	if (left < thresholdLeft)
 	{
-		return FALSE;
+		return false;
 	}
-	return TRUE;
+	return true;
 }
 
 /*
